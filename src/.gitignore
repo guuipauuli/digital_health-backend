@@ -1,0 +1,7 @@
+###> symfony/framework-bundle ###
+/bin
+/var
+/vendor
+/composer.lock
+/symfony.lock
+###< symfony/framework-bundle ###
