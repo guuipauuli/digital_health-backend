@@ -4,4 +4,5 @@
 /vendor
 /composer.lock
 /symfony.lock
+/.env
 ###< symfony/framework-bundle ###
