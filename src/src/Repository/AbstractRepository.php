@@ -3,12 +3,14 @@
 namespace App\Repository;
 
 use App\Exception\RegistryNotFoundException;
-use App\Helpers\RequestDataExtractor;
+use App\Helper\MessagesHelper;
+use App\Helper\RequestDataExtractorHelper;
+use App\Helper\ResponseHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 
-class AbstractRepository extends ServiceEntityRepository
+abstract class AbstractRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry, string $entityClass)
     {
@@ -17,24 +19,29 @@ class AbstractRepository extends ServiceEntityRepository
 
     public function getByFilters()
     {
-        $requestDataExtractor = new RequestDataExtractor();
-        return $this->findBy(
-            $requestDataExtractor->getFilterData(),
-            $requestDataExtractor->getOrderData(),
-            $requestDataExtractor->getItemsPerPage(),
-            $requestDataExtractor->getPaginationData()
-        );
+        $requestDataExtractor = new RequestDataExtractorHelper();
+        return [
+            'total' => count($this->findBy($requestDataExtractor->getFilterData())),
+            'page' => ($requestDataExtractor->getPaginationData() / $requestDataExtractor->getItemsPerPage()),
+            'perPage' => $requestDataExtractor->getItemsPerPage(),
+            'rows' => $this->findBy(
+                $requestDataExtractor->getFilterData(),
+                $requestDataExtractor->getOrderData(),
+                $requestDataExtractor->getItemsPerPage(),
+                $requestDataExtractor->getPaginationData()
+            )
+        ];
     }
 
     public function findOrFail(int $id) {
         $entity = $this->find($id);
         if(empty($entity)) {
-            throw new RegistryNotFoundException('Não foi possível encontrar registro para o id informado');
+            throw new RegistryNotFoundException(MessagesHelper::NOT_FOUND);
         }
         return $entity;
     }
 
-    public function add(object $entity, bool $flush = true): void
+    public function add(object $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
         if ($flush) {
@@ -54,8 +61,9 @@ class AbstractRepository extends ServiceEntityRepository
         }
     }
 
-    public function removeById(int $id): void {
+    public function removeById(int $id) {
         $this->remove($this->findOrFail($id));
+        return new ResponseHelper(Response::HTTP_OK, MessagesHelper::SUCCESSFULLY_DELETED);
     }
 
     public function flush()

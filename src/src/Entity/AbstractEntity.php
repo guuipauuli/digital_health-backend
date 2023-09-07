@@ -6,23 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 
 abstract class AbstractEntity
 {
-//    #[ORM\Id]
-//    #[ORM\GeneratedValue]
-//    #[ORM\Column]
-//    private ?int $id = null;
-
-    #[ORM\Column("created_at", type: "datetime", nullable: false, options: ["default" => new \DateTime()])]
+    #[ORM\Column("created_at", type: "datetime", nullable: false)]
     protected $createdAt;
 
     #[ORM\Column("updated_at", type: "datetime", nullable: true)]
     protected $updatedAt;
 
-//    abstract public function setId(int $id);
+    #[ORM\PrePersist]
+    public function setCreatedAt(): void
+    {
+        if(!$this->createdAt) {
+            $this->createdAt = new \DateTime();
+        }
+    }
 
-//    abstract public function getId();
-
-//    public function getId(): ?int
-//    {
-//        return $this->id;
-//    }
+    #[ORM\PreUpdate]
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
 }

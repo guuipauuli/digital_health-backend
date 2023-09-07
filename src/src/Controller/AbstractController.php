@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as ab;
 
-abstract class BaseController extends AbstractController
+abstract class AbstractController extends ab
 {
     public const METHOD_GET = 'GET';
     public const METHOD_POST = 'POST';
