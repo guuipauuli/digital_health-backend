@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helper;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class RequestDataExtractor
+class RequestDataExtractorHelper
 {
     private Request $request;
 
