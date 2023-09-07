@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -16,9 +17,10 @@ class AbstractService
     private ValidatorInterface $validatorInterface;
     private static string $entityClass;
 
-    public function __construct(ValidatorInterface $validator, string $entityClass)
+    public function __construct(ValidatorInterface $validator, string $entityClass, ?ServiceEntityRepository $repository = null)
     {
         $this->validatorInterface = $validator;
+        $this->repository = $repository;
         self::$entityClass = $entityClass;
     }
 
@@ -44,5 +46,11 @@ class AbstractService
             }
             throw new ValidatorException($error);
         }
+    }
+
+    public function store(string $content): object {
+        $object = $this->deserialize($content);
+        $this->repository->add($object);
+        return $object;
     }
 }

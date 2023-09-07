@@ -20,10 +20,10 @@ class UserService extends AbstractService
         $this->hasher = $hasher;
     }
 
-    public function store(object $object): User {
+    public function storeUser(object $object): User {
         $user = $this->deserialize(json_encode($object));
         $this->hash($user, $object->password);
-        $this->repository->add($user, true);
+        $this->repository->add($user);
         return $user;
     }
 
