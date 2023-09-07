@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="v1.0.0-1" author="guilherme.pauli">
+        <createSequence sequenceName="user_id_seq" incrementBy="1" startValue="1"/>
+        <createTable tableName="user" schemaName="app">
+            <column name="id" type="int" defaultValueSequenceNext="user_id_seq">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(180)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_4C0F3A96E7927C74"/>
+            </column>
+            <column name="roles" type="json">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1.0.0-2" author="guilherme.pauli">
+        <createSequence sequenceName="company_id_seq" incrementBy="1" startValue="1"/>
+        <createTable tableName="company" schemaName="app">
+            <column name="id" type="int" defaultValueSequenceNext="company_id_seq">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="corporate_name" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fantasy_name" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="federal_registration" type="varchar(14)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_C218180CA870D0EE"/>
+            </column>
+            <column name="state_registration" type="varchar(9)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_C218180C77B9AECA"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

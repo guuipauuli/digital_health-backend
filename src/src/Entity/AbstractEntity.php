@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class AbstractEntity
 {
+    #[Assert\NotNull]
     #[ORM\Column("created_at", type: "datetime", nullable: false)]
     protected $createdAt;
 

@@ -1,6 +1,6 @@
 ###> symfony/framework-bundle ###
 /bin
-/migrations
+/tools/migrations
 /var
 /vendor
 /composer.lock
