@@ -9,14 +9,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserService extends AbstractService
 {
-    private UserRepository $repository;
-
     private UserPasswordHasherInterface $hasher;
 
     public function __construct(ValidatorInterface $validator, UserRepository $repository, UserPasswordHasherInterface $hasher)
     {
         parent::__construct($validator, User::class);
-        $this->repository = $repository;
         $this->hasher = $hasher;
     }
 
