@@ -22,7 +22,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
         $requestDataExtractor = new RequestDataExtractorHelper();
         return [
             'total' => count($this->findBy($requestDataExtractor->getFilterData())),
-            'page' => ($requestDataExtractor->getPaginationData() / $requestDataExtractor->getItemsPerPage()),
+            'page' => ($requestDataExtractor->getPaginationData()?:0) / ($requestDataExtractor->getItemsPerPage()?:1),
             'perPage' => $requestDataExtractor->getItemsPerPage(),
             'rows' => $this->findBy(
                 $requestDataExtractor->getFilterData(),
@@ -35,13 +35,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     public function findOrFail(int $id) {
         $entity = $this->find($id);
-        if(empty($entity)) {
+        if(is_null($entity)) {
             throw new RegistryNotFoundException(MessagesHelper::NOT_FOUND);
         }
         return $entity;
     }
 
-    public function add(object $entity, bool $flush = false): void
+    public function add(object $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
         if ($flush) {

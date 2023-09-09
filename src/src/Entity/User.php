@@ -21,7 +21,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[Assert\Email]
     #[Assert\NotBlank]
     #[Assert\NotNull]
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -30,7 +30,6 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @var string The hashed password
      */
-    #[Assert\NotNull]
     #[ORM\Column]
     private ?string $password = null;
 
@@ -83,7 +82,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -110,7 +109,8 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
             "id" => $this->getId(),
             "email" => $this->getEmail(),
             "userIdentifier" => $this->getUserIdentifier(),
-            "roles" => $this->getRoles()
+            "roles" => $this->getRoles(),
+            "company" => $this->getCompany()
         ];
     }
 }

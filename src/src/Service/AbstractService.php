@@ -13,18 +13,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractService
 {
-
     private ValidatorInterface $validatorInterface;
     private static string $entityClass;
 
-    public function __construct(ValidatorInterface $validator, string $entityClass, ?ServiceEntityRepository $repository = null)
+    public function __construct(ValidatorInterface $validator, string $entityClass, ServiceEntityRepository $repository)
     {
         $this->validatorInterface = $validator;
-        $this->repository = $repository;
+        $this->serviceEntityRepository = $repository;
         self::$entityClass = $entityClass;
     }
 
-    protected function deserialize(string $jsonObject): object {
+    protected function deserialize(string $jsonObject, bool $validate = true): object {
         $normalizers = [
             new ObjectNormalizer(
                 null, null, null, new PhpDocExtractor()
@@ -33,7 +32,9 @@ class AbstractService
 
         $object = (new Serializer($normalizers, [new JsonEncoder()]))
             ->deserialize($jsonObject, self::$entityClass, 'json');
-        $this->validate($object);
+        if($validate) {
+            $this->validate($object);
+        }
         return $object;
     }
 
@@ -50,7 +51,7 @@ class AbstractService
 
     public function store(string $content): object {
         $object = $this->deserialize($content);
-        $this->repository->add($object);
+        $this->serviceEntityRepository->add($object);
         return $object;
     }
 }

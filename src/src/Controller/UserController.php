@@ -25,7 +25,7 @@ class UserController extends AbstractController
     #[Route('/user', name: 'store_user', methods: self::METHOD_POST)]
     public function store(UserService $service, Request $request)
     {
-        return $this->json($service->storeUser(json_decode($request->getContent())));
+        return $this->json($service->storeUser($request->getContent()));
     }
 
     #[Route('/user/{id}', name: 'delete_user_by_id', methods: self::METHOD_DELETE)]

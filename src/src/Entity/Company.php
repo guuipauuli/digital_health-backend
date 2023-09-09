@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ORM\Table(name: 'company', schema: 'app')]
 #[ORM\HasLifecycleCallbacks]
-class Company extends AbstractEntity
+class Company extends AbstractBasicEntity
 {
     #[ORM\Id]
     #[ORM\Column]

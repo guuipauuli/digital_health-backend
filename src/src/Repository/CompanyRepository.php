@@ -6,12 +6,11 @@ use App\Entity\Company;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<User>
- *
- * @implements PasswordUpgraderInterface<User>
+ * @extends AbstractRepository<Company>
  *
  * @method Company|null find($id, $lockMode = null, $lockVersion = null)
  * @method Company|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Company      findOrFail(int $id)
  * @method Company[]    findAll()
  * @method Company[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */

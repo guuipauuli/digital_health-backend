@@ -6,32 +6,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="v1.0.0-1" author="guilherme.pauli">
-        <createSequence sequenceName="user_id_seq" incrementBy="1" startValue="1"/>
-        <createTable tableName="user" schemaName="app">
-            <column name="id" type="int" defaultValueSequenceNext="user_id_seq">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="email" type="varchar(180)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_4C0F3A96E7927C74"/>
-            </column>
-            <column name="roles" type="json">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="timestamp" />
-        </createTable>
+    <changeSet id="v1.0.0-0" author="guilherme.pauli">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS app;
+        </sql>
     </changeSet>
 
-    <changeSet id="v1.0.0-2" author="guilherme.pauli">
-        <createSequence sequenceName="company_id_seq" incrementBy="1" startValue="1"/>
+    <changeSet id="v1.0.0-1" author="guilherme.pauli">
+        <createSequence sequenceName="company_id_seq" incrementBy="1" startValue="1" schemaName="app" />
         <createTable tableName="company" schemaName="app">
-            <column name="id" type="int" defaultValueSequenceNext="company_id_seq">
+            <column name="id" type="int" defaultValueComputed="nextval('app.company_id_seq')">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="corporate_name" type="varchar(180)">
@@ -51,5 +35,230 @@
             </column>
             <column name="updated_at" type="timestamp" />
         </createTable>
+    </changeSet>
+
+    <changeSet id="v1.0.0-2" author="guilherme.pauli">
+        <createSequence sequenceName="user_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="user" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.user_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="roles" type="json">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableSchemaName="app"
+                baseTableName="user"
+                baseColumnNames="company_id"
+                constraintName="FK_4C0F3A96979B1AD6"
+                referencedColumnNames="id"
+                referencedTableSchemaName="app"
+                referencedTableName="company"/>
+    </changeSet>
+
+    <changeSet id="v1.0.0-3" author="guilherme.pauli">
+        <createSequence sequenceName="state_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="state" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.state_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="acronym" type="varchar(2)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_B53E8152512D8851"/>
+            </column>
+            <column name="description" type="varchar(180)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_B53E81526DE44026"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="AC" />
+            <column name="description" value="Acre" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="AL" />
+            <column name="description" value="Alagoas" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="AP" />
+            <column name="description" value="Amapá" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="AM" />
+            <column name="description" value="Amazonas" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="BA" />
+            <column name="description" value="Bahia" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="CE" />
+            <column name="description" value="Ceará" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="DF" />
+            <column name="description" value="Distrito Federal" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="ES" />
+            <column name="description" value="Espírito Santo" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="GO" />
+            <column name="description" value="Goiás" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="MA" />
+            <column name="description" value="Maranhão" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="MT" />
+            <column name="description" value="Mato Grosso" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="MS" />
+            <column name="description" value="Mato Grosso do Sul" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="MG" />
+            <column name="description" value="Minas Gerais" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="PA" />
+            <column name="description" value="Pará" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="PB" />
+            <column name="description" value="Paraíba" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="PR" />
+            <column name="description" value="Paraná" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="PE" />
+            <column name="description" value="Pernambuco" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="PI" />
+            <column name="description" value="Piauí" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="RJ" />
+            <column name="description" value="Rio de Janeiro" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="RN" />
+            <column name="description" value="Rio Grande do Norte" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="RS" />
+            <column name="description" value="Rio Grande do Sul" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="RO" />
+            <column name="description" value="Rondônia" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="RR" />
+            <column name="description" value="Roraima" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="SC" />
+            <column name="description" value="Santa Catarina" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="SP" />
+            <column name="description" value="São Paulo" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="SE" />
+            <column name="description" value="Sergipe" />
+            <column name="created_at" value="now()" />
+        </insert>
+        <insert tableName="state" schemaName="app">
+            <column name="acronym" value="TO" />
+            <column name="description" value="Tocantins" />
+            <column name="created_at" value="now()" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="v1.0.0-4" author="guilherme.pauli">
+        <createSequence sequenceName="city_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="city" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.city_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableSchemaName="app"
+                baseTableName="city"
+                baseColumnNames="state_id"
+                constraintName="FK_ECC7EEEB5D83CC1"
+                referencedColumnNames="id"
+                referencedTableSchemaName="app"
+                referencedTableName="state"/>
+        <addForeignKeyConstraint
+                baseTableSchemaName="app"
+                baseTableName="city"
+                baseColumnNames="company_id"
+                constraintName="IDX_ECC7EEEB979B1AD6"
+                referencedColumnNames="id"
+                referencedTableSchemaName="app"
+                referencedTableName="company"/>
     </changeSet>
 </databaseChangeLog>

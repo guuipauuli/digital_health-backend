@@ -3,28 +3,22 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
-abstract class AbstractEntity
+abstract class AbstractEntity extends AbstractBasicEntity
 {
-    #[Assert\NotNull]
-    #[ORM\Column("created_at", type: "datetime", nullable: false)]
-    protected $createdAt;
+    #[ORM\ManyToOne(targetEntity: Company::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    protected Company|null $company = null;
 
-    #[ORM\Column("updated_at", type: "datetime", nullable: true)]
-    protected $updatedAt;
-
-    #[ORM\PrePersist]
-    public function setCreatedAt(): void
+    public function getCompany(): ?Company
     {
-        if(!$this->createdAt) {
-            $this->createdAt = new \DateTime();
-        }
+        return $this->company;
     }
 
-    #[ORM\PreUpdate]
-    public function setUpdatedAt(): void
+    public function setCompany(?Company $company): static
     {
-        $this->updatedAt = new \DateTime();
+        $this->company = $company;
+
+        return $this;
     }
 }

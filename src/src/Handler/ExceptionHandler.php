@@ -2,6 +2,8 @@
 
 namespace App\Handler;
 
+use App\Exception\RegistryNotFoundException;
+use App\Exception\ValidationException;
 use App\Helper\MessagesHelper;
 use App\Helper\ResponseHelper;
 use App\Kernel;
@@ -15,7 +17,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Doctrine\DBAL\Exception AS DBALException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ExceptionHandler implements EventSubscriberInterface
 {
@@ -34,7 +35,8 @@ class ExceptionHandler implements EventSubscriberInterface
                 ['handleAccessDeniedException', -1],
                 ['handleBadRequestHttpException', -1],
                 ['handleDBALException', -1],
-                ['handleValidatorException', -1],
+                ['handleValidationException', -1],
+                ['handleRegistryNotFoundException', -1],
                 ['handleGenericException', -1],
                 ['handle404Exception', 0]
             ]
@@ -66,9 +68,17 @@ class ExceptionHandler implements EventSubscriberInterface
         }
     }
 
-    public function handleValidatorException(ExceptionEvent $event)
+    public function handleValidationException(ExceptionEvent $event)
     {
-        if ($event->getThrowable() instanceof ValidatorException) {
+        if ($event->getThrowable() instanceof ValidationException) {
+            $event->setResponse($this->json(
+                $event, Response::HTTP_BAD_REQUEST));
+        }
+    }
+
+    public function handleRegistryNotFoundException(ExceptionEvent $event)
+    {
+        if ($event->getThrowable() instanceof RegistryNotFoundException) {
             $event->setResponse($this->json(
                 $event, Response::HTTP_BAD_REQUEST));
         }

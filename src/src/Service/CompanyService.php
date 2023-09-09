@@ -6,6 +6,11 @@ use App\Entity\Company;
 use App\Repository\CompanyRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @extends AbstractService<User>
+ *
+ * @method Company deserialize(string $jsonObject, bool $validate = true)
+ */
 class CompanyService extends AbstractService
 {
     public function __construct(ValidatorInterface $validator, CompanyRepository $repository)
