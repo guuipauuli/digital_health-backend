@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\StateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: StateRepository::class)]
 #[ORM\Table(name: 'state', schema: 'app')]
 #[ORM\HasLifecycleCallbacks]
 class State extends AbstractBasicEntity

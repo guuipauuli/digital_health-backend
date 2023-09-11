@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Helper\SecurityHelper;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,15 +16,16 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User|null findOneByCriteriaAndCompany(array $criteria, array $orderBy = null)
  * @method User      findOrFail(int $id)
  * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method User[]    findByCriteriaAndCompany(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, SecurityHelper $security)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($registry, User::class, $security);
     }
 
     /**
@@ -41,6 +43,6 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
     }
 
     public function findOneByEmail(string $email): ?User {
-        return $this->findOneBy(['email' => $email]);
+        return $this->findOneByCriteriaAndCompany(['email' => $email]);
     }
 }

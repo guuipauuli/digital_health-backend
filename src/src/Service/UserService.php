@@ -4,8 +4,9 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Exception\ValidationException;
-use App\Repository\CompanyRepository;
+use App\Helper\SecurityHelper;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -17,7 +18,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserService extends AbstractService
 {
     private UserPasswordHasherInterface $hasher;
-    private CompanyRepository $companyRepository;
 
     private UserRepository $repository;
 
@@ -25,12 +25,12 @@ class UserService extends AbstractService
         ValidatorInterface $validator,
         UserRepository $repository,
         UserPasswordHasherInterface $hasher,
-        CompanyRepository $companyRepository
+        SecurityHelper $security,
+        EntityManagerInterface $entityManager
     )
     {
-        parent::__construct($validator, User::class, $repository);
+        parent::__construct($validator, User::class, $entityManager, $security);
         $this->hasher = $hasher;
-        $this->companyRepository = $companyRepository;
         $this->repository = $repository;
     }
 
@@ -40,12 +40,21 @@ class UserService extends AbstractService
         return $user;
     }
 
+    public function updateUser(string $content, int $id): User {
+        $user = $this->mapUser($content);
+        $userToUpdate = $this->repository->findOrFail($id);
+        $userToUpdate->setRoles($user->getRoles());
+        $userToUpdate->setEmail($user->getEmail());
+        $this->repository->flush();
+        return $userToUpdate;
+    }
+
     private function mapUser(string $content): User {
         $object = json_decode($content);
         $user = $this->deserialize($content);
-        if(isset($object->companyId)) {
-            $user->setCompany($this->companyRepository->findOrFail($object->companyId));
-        }
+
+        $this->setCompany($user);
+
         if(isset($object->password)) {
             $this->hash($user, $object->password);
         }

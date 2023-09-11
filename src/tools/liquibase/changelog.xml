@@ -7,4 +7,5 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="changelog/db.changelog_v1.0.0_20230907.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/db.changelog_v1.1.0_20230910.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

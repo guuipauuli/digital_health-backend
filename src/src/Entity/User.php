@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user', schema: 'app')]
 #[ORM\HasLifecycleCallbacks]
-class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSerializable
+class User extends AbstractBasicEntity implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -32,6 +32,10 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\ManyToOne(targetEntity: Company::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    protected Company|null $company = null;
 
     public function getId(): ?int
     {
@@ -97,10 +101,27 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void
+    public function eraseCredentials(): static
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function isMaster(): bool {
+        return in_array('ROLE_MASTER', $this->getRoles());
     }
 
     public function jsonSerialize(): array

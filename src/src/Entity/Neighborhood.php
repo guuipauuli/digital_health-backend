@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CityRepository;
+use App\Repository\NeighborhoodRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
-#[ORM\Entity(repositoryClass: CityRepository::class)]
-#[ORM\Table(name: 'city', schema: 'app')]
+#[ORM\Entity(repositoryClass: NeighborhoodRepository::class)]
+#[ORM\Table(name: 'neighborhood', schema: 'app')]
 #[ORM\HasLifecycleCallbacks]
-class City extends AbstractBasicEntity
+class Neighborhood extends AbstractBasicEntity
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -23,9 +22,9 @@ class City extends AbstractBasicEntity
     private ?string $description = null;
 
     #[Assert\NotNull]
-    #[ORM\ManyToOne(targetEntity: State::class)]
+    #[ORM\ManyToOne(targetEntity: City::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private State|null $state = null;
+    private City|null $city = null;
 
     public function getId(): ?int
     {
@@ -51,14 +50,14 @@ class City extends AbstractBasicEntity
         return $this;
     }
 
-    public function getState(): ?State
+    public function getCity(): ?City
     {
-        return $this->state;
+        return $this->city;
     }
 
-    public function setState(?State $state): static
+    public function setCity(?City $city): static
     {
-        $this->state = $state;
+        $this->city = $city;
 
         return $this;
     }

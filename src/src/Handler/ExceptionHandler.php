@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Doctrine\DBAL\Exception AS DBALException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ExceptionHandler implements EventSubscriberInterface
 {
@@ -70,7 +71,7 @@ class ExceptionHandler implements EventSubscriberInterface
 
     public function handleValidationException(ExceptionEvent $event)
     {
-        if ($event->getThrowable() instanceof ValidationException) {
+        if ($event->getThrowable() instanceof ValidationException || $event->getThrowable() instanceof ValidatorException) {
             $event->setResponse($this->json(
                 $event, Response::HTTP_BAD_REQUEST));
         }

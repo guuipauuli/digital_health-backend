@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-class AbstractBasicEntity
+class AbstractBasicEntity extends Entity
 {
     #[ORM\Column("created_at", type: "datetime", nullable: false)]
     protected $createdAt;

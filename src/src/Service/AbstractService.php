@@ -2,7 +2,12 @@
 
 namespace App\Service;
 
+use App\Entity\Company;
+use App\Entity\Entity;
+use App\Helper\SecurityHelper;
+use App\Repository\CompanyRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -14,13 +19,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AbstractService
 {
     private ValidatorInterface $validatorInterface;
+
     private static string $entityClass;
 
-    public function __construct(ValidatorInterface $validator, string $entityClass, ServiceEntityRepository $repository)
+    private ServiceEntityRepository $serviceEntityRepository;
+
+    private SecurityHelper $security;
+    private CompanyRepository $companyRepository;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        string $entityClass,
+        EntityManagerInterface $entityManager,
+        SecurityHelper $security
+    )
     {
         $this->validatorInterface = $validator;
-        $this->serviceEntityRepository = $repository;
         self::$entityClass = $entityClass;
+        $this->security = $security;
+        $this->serviceEntityRepository = $entityManager->getRepository($entityClass);
+        $this->companyRepository = $entityManager->getRepository(Company::class);
     }
 
     protected function deserialize(string $jsonObject, bool $validate = true): object {
@@ -51,7 +69,17 @@ class AbstractService
 
     public function store(string $content): object {
         $object = $this->deserialize($content);
+        if(method_exists($object, 'setCompany')) {
+            $object->setCompany($this->security->getLoggedUser()->getCompany());
+        }
         $this->serviceEntityRepository->add($object);
         return $object;
+    }
+
+    protected function setCompany(Entity $entity) {
+        $loggedUser = $this->security->getLoggedUser();
+        if(!$loggedUser->isMaster()) {
+            $entity->setCompany($loggedUser->getCompany());
+        }
     }
 }

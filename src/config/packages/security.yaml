@@ -14,8 +14,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            stateless: true
             lazy: true
-            provider: app_user_provider
+            custom_authenticators:
+                - App\Security\ApiAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "c3607835-4b6e-4443-b6d5-a08d55c0a257",
+		"name": "Company",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19332845"
+	},
+	"item": [
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/companies?page=0&perPage=3&sort[id]=asc",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"companies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "perPage",
+							"value": "3"
+						},
+						{
+							"key": "sort[id]",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List By Identifier",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/company/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"company",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"corporateName\": \"Corporate Name\",\n    \"fantasyName\": \"Fantasy Name\",\n    \"federalRegistration\": \"07618137009157\",\n    \"stateRegistration\": \"5107397\",\n    \"addressId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/company",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"corporateName\": \"Corporate Name\",\n    \"fantasyName\": \"Fantasy Name\",\n    \"federalRegistration\": \"07618137009167\",\n    \"stateRegistration\": \"5107357\",\n    \"addressId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/company/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"company",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/company/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"company",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

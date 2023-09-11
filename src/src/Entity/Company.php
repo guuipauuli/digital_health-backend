@@ -42,6 +42,10 @@ class Company extends AbstractBasicEntity
     #[ORM\Column(length: 9, unique: true)]
     private ?string $stateRegistration = null;
 
+    #[ORM\ManyToOne(targetEntity: Address::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private Address|null $address = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,6 +102,18 @@ class Company extends AbstractBasicEntity
     public function setStateRegistration(?string $stateRegistration): static
     {
         $this->stateRegistration = $stateRegistration;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
