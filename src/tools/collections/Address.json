@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "0a6576ce-12bb-4e9b-ba53-42a1531d60ac",
+		"name": "Address",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19332845"
+	},
+	"item": [
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/addresses?page=0&perPage=3&sort[id]=asc",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"addresses"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "perPage",
+							"value": "3"
+						},
+						{
+							"key": "sort[id]",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List By Identifier",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/address/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"address",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"street\": \"Rua José Niltom Pacheco\",\n    \"neighborhoodId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/address",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"street\": \"Rua José Niltom Pacheco\",\n    \"neighborhoodId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/address/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"address",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/address/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"address",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,10 @@
+version: "3.1"
+services:
+  api:
+    build: .
+    container_name: digital-health
+    restart: no
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 8000:8080

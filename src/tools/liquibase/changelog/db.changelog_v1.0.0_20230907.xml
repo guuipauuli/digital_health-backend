@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="v1.0.0-1" author="guilherme.pauli">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS app;
+        </sql>
+    </changeSet>
+
+    <changeSet id="v1.0.0-2" author="guilherme.pauli">
+        <createSequence sequenceName="state_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="state" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.state_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="acronym" type="varchar(2)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_B53E8152512D8851"/>
+            </column>
+            <column name="description" type="varchar(180)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_B53E81526DE44026"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1.0.0-3" author="guilherme.pauli">
+        <createSequence sequenceName="city_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="city" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.city_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="state_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableSchemaName="app"
+            baseTableName="city"
+            baseColumnNames="state_id"
+            constraintName="FK_ECC7EEEB5D83CC1"
+            referencedColumnNames="id"
+            referencedTableSchemaName="app"
+            referencedTableName="state"/>
+    </changeSet>
+
+    <changeSet id="v1.0.0-4" author="guilherme.pauli">
+        <createSequence sequenceName="neighborhood_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="neighborhood" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.neighborhood_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+<!--            <column name="company_id" type="int">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableSchemaName="app"
+            baseTableName="neighborhood"
+            baseColumnNames="city_id"
+            constraintName="FK_5B1D566E8BAC62AF"
+            referencedColumnNames="id"
+            referencedTableSchemaName="app"
+            referencedTableName="city"/>
+    </changeSet>
+
+    <changeSet id="v1.0.0-5" author="guilherme.pauli">
+        <createSequence sequenceName="address_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="address" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.address_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="street" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postal_code" type="varchar(8)" />
+            <column name="neighborhood_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableSchemaName="app"
+            baseTableName="address"
+            baseColumnNames="neighborhood_id"
+            constraintName="FK_80E97EC2803BB24B"
+            referencedColumnNames="id"
+            referencedTableSchemaName="app"
+            referencedTableName="neighborhood"/>
+    </changeSet>
+
+    <changeSet id="v1.0.0-6" author="guilherme.pauli">
+        <createSequence sequenceName="company_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="company" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.company_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="corporate_name" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fantasy_name" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="federal_registration" type="varchar(14)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_C218180CA870D0EE"/>
+            </column>
+            <column name="state_registration" type="varchar(9)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQ_C218180C77B9AECA"/>
+            </column>
+            <column name="address_id" type="int" />
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1.0.0-7" author="guilherme.pauli">
+        <addForeignKeyConstraint
+                baseTableSchemaName="app"
+                baseTableName="company"
+                baseColumnNames="address_id"
+                constraintName="FK_C218180CF5B7AF75"
+                referencedColumnNames="id"
+                referencedTableSchemaName="app"
+                referencedTableName="address"/>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="app"
+                baseTableName="address"
+                baseColumnNames="company_id"
+                constraintName="FK_80E97EC2979B1AD6"
+                referencedColumnNames="id"
+                referencedTableSchemaName="app"
+                referencedTableName="company"/>
+    </changeSet>
+
+    <changeSet id="v1.0.0-8" author="guilherme.pauli">
+        <createSequence sequenceName="user_id_seq" incrementBy="1" startValue="1" schemaName="app" />
+        <createTable tableName="user" schemaName="app">
+            <column name="id" type="int" defaultValueComputed="nextval('app.user_id_seq')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(180)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="roles" type="json">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="int" />
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp" />
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableSchemaName="app"
+            baseTableName="user"
+            baseColumnNames="company_id"
+            constraintName="FK_4C0F3A96979B1AD6"
+            referencedColumnNames="id"
+            referencedTableSchemaName="app"
+            referencedTableName="company"/>
+    </changeSet>
+</databaseChangeLog>

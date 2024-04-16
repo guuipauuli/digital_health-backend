@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "c3b13548-08d4-4e0a-981d-d5668c668bf2",
+		"name": "City",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19332845"
+	},
+	"item": [
+		{
+			"name": "List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/cities?page=0&perPage=3&sort[id]=asc",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"cities"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "perPage",
+							"value": "3"
+						},
+						{
+							"key": "sort[id]",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List By Identifier",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/city/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"city",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Biguaçu\",\n    \"stateId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/city",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"city"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Biguaçu\",\n    \"stateId\": 24\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}/city/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"city",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{apiUrl}}/city/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"city",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
